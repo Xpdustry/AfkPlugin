@@ -7,3 +7,14 @@
 ## Description
 
 Kick your useless teammates...
+
+## Usage
+
+This plugin is very simple, I may add complex settings later.
+But for now, in the console:
+
+```
+kicker <time/status> [arg]
+```
+
+Deal with it...
