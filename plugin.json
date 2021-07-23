@@ -1,13 +1,13 @@
 {
-  "name": "survivalpvp-plugin",
-  "displayName": "Xpdustry SurvivalPvp Plugin",
+  "name": "xpdustry-afk-plugin",
+  "displayName": "Xpdustry AfkPlugin",
   "author": "Phinner",
-  "description": "Admin abuse lol...",
-  "version": "0.2",
+  "description": "Kick afk bois.",
+  "version": "1.0",
   "minGameVersion": "105",
   "hidden": true,
   "java": true,
-  "main": "fr.xpdustry.plugins.survivalpvp.SurvivalPvpPlugin",
-  "repo": "Xpdustry/SurvivalPvpPlugin",
+  "main": "fr.xpdustry.plugins.afk.AfkPlugin",
+  "repo": "Xpdustry/AfkPlugin",
   "dependencies": []
 }
