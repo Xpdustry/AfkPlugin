@@ -9,7 +9,6 @@ import mindustry.game.EventType.*;
 import static arc.util.Log.*;
 import static mindustry.Vars.*;
 
-
 @SuppressWarnings("unused")  // <- Only used for this template so IntelliJ stop screaming at me...
 public class AfkPlugin extends Plugin {
 
@@ -43,7 +42,7 @@ public class AfkPlugin extends Plugin {
 
         /** Packed coordinates */
         private int lastPos = 0;
-        public final Interval timer = new Interval();
+        private final Interval timer = new Interval();
 
         private boolean isAFK(Player player) {
 
