@@ -14,9 +14,11 @@ import static mindustry.Vars.*;
 
 @SuppressWarnings("unused")  // <- Only used for this template so IntelliJ stop screaming at me...
 public class AfkPlugin extends Plugin{
+    // Settings
     public static String message = "[scarlet]You have been kicked for being AFK.";
     public static boolean enabled = true;
     public static int maxAfkPeriod = 10;
+    
     public static final ObjectMap<Player, PosWatcher> kicker = new ObjectMap<>();
     public static final Interval updater = new Interval();
 
