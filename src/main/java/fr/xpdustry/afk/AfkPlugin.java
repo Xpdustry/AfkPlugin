@@ -12,7 +12,7 @@ import static arc.util.Log.*;
 import static mindustry.Vars.*;
 
 
-@SuppressWarnings("unused")  // <- Only used for this template so IntelliJ stop screaming at me...
+@SuppressWarnings("unused")
 public class AfkPlugin extends Plugin{
     // Settings
     public static String message = "[scarlet]You have been kicked for being AFK.";
