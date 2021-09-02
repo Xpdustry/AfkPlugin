@@ -10,11 +10,13 @@ Kick your useless teammates...
 
 ## Usage
 
-This plugin is very simple, I may add complex settings later.
-But for now, in the console:
-
+This plugin is very simple:
 ```
-kicker <time/status> [arg]
+kicker <time/status/message> [arg...]
 ```
+- `time` to set the max afk time in minutes.
+- `status` to enable/disable the plugin.
+- `message` to customize the kick message, you can include the afk time with a `@`, such as `You have been afk for @ minute(s).`
 
-Deal with it...
+Not using the 2nd arg such as `kicker status`, will just return the value.
+All of these options are saved in `settings.bin`.
