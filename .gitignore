@@ -5,8 +5,8 @@
 build/
 bin/
 
-# VSC be like
+# Eclipse be like
 *.class
 *.project
 *.classpath
-*.prefs
+.settings/
