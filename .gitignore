@@ -3,3 +3,10 @@
 /.gradle/
 
 build/
+bin/
+
+# VSC be like
+*.class
+*.project
+*.classpath
+*.prefs
