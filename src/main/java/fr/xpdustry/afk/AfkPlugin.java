@@ -62,7 +62,7 @@ public class AfkPlugin extends Plugin{
     @Override
     public void registerServerCommands(CommandHandler handler){
         // Kicker commands :^)
-        handler.register("kicker", "<time/status/message> [arg...]", "Manage the AFK kicker.", (args) -> {
+        handler.register("afk", "<time/status/message> [arg...]", "Manage the AFK kicker.", (args) -> {
             switch (args[0].toLowerCase()){
                 case "time":
                     if(args.length == 1){
