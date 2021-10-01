@@ -18,7 +18,7 @@ buildscript{
 
         // the file:// at the beginning is required if you use windows if you don't want github actions to scream at you
         if(System.getProperty("user.name") == "Finley"){
-            serverDirectoryPath = "file://C:/Users/Finley/Documents/My Games/Mindustry/Server/mindustry-server-$mindustryVersion"
+            serverDirectoryPath = "file://D:/Games/Mindustry/Builds/mindustry-server-$mindustryVersion"
         }
     }
 
