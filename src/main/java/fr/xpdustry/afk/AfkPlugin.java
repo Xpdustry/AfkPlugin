@@ -4,12 +4,9 @@ import arc.*;
 import arc.struct.*;
 import arc.util.*;
 
-import mindustry.*;
 import mindustry.gen.*;
 import mindustry.mod.*;
 import mindustry.game.EventType.*;
-
-import java.util.*;
 
 
 @SuppressWarnings("unused")
@@ -20,10 +17,9 @@ public class AfkPlugin extends Plugin{
     private static int duration = 10;
     // Internals
     private static final Interval updater = new Interval();
-    private static final HashSet<AfkWatcher> kicker = new HashSet<>(8);
+    private static final ObjectMap<Playerc,AfkWatcher> kicker = new ObjectMap<>(8);
 
     @Override
-    @SuppressWarnings("all")
     public void init(){
         // Load the settings
         message = Core.settings.getString("xpdustry-afk-message", message);
@@ -31,14 +27,14 @@ public class AfkPlugin extends Plugin{
         duration = Core.settings.getInt("xpdustry-afk-duration", duration);
 
         // Deploy the listeners
-        Events.on(PlayerJoin.class, e -> kicker.add(new AfkWatcher(e.player)));
+        Events.on(PlayerJoin.class, e -> kicker.put(e.player, new AfkWatcher(e.player)));
         Events.on(PlayerLeave.class, e -> kicker.remove(e.player));
         Events.run(Trigger.update, () -> {
             // Don't need to iterate every tick, every second is enough...
             if(enabled && updater.get(Time.toSeconds)){
-                kicker.forEach(watcher -> {
-                    if(!watcher.isAfk(duration));
-                    else watcher.getPlayer().kick(Strings.format(message, duration));
+                kicker.each((player, watcher) -> {
+                    if(!watcher.isAfk(duration)) return;
+                    player.kick(Strings.format(message, duration));
                 });
             }
         });
@@ -113,49 +109,7 @@ public class AfkPlugin extends Plugin{
         Core.settings.put("xpdustry-afk-duration", duration);
     }
 
-    public static Seq<AfkWatcher> getAfkPlayers(){
-        return Seq.with(kicker);
-    }
-
-    /** A player is considered AFK if he is not moving and not building something */
-    public static class AfkWatcher{
-        /** Packed coordinates */
-        private int lastPos = 0;
-        private final Interval timer = new Interval();
-        private final Playerc player;
-
-        public AfkWatcher(Playerc player){
-            this.player = player;
-        }
-
-        public boolean isAfk(float duration){
-            int currentPos = (player.tileY() * Vars.world.height()) + player.tileX();
-            if(currentPos != lastPos || player.unit().isBuilding()) resetAfkTimer();
-
-            lastPos = currentPos;
-            return timer.get(duration * Time.toMinutes);
-        }
-
-        public void resetAfkTimer(){
-            timer.reset(0, 0);
-        }
-
-        public Playerc getPlayer(){
-            return player;
-        }
-
-        public float getAfkTime(){
-            return timer.getTime(0);
-        }
-
-        @Override
-        public int hashCode(){
-            return player.hashCode();
-        }
-
-        @Override
-        public String toString(){
-            return player.toString();
-        }
+    public static ObjectMap<Playerc,AfkWatcher> getAfkPlayers(){
+        return kicker.copy();
     }
 }
