@@ -17,7 +17,7 @@ public class AfkPlugin extends Plugin{
     private static int duration = 10;
     // Internals
     private static final Interval updater = new Interval();
-    private static final ObjectMap<Playerc,AfkWatcher> kicker = new ObjectMap<>(8);
+    private static final ObjectMap<Playerc, AfkWatcher> kicker = new ObjectMap<>(8);
 
     @Override
     public void init(){

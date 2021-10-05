@@ -30,15 +30,11 @@ public class AfkWatcher{
      */
     public boolean isAfk(float duration){
         int currentPos = (player.tileY() * Vars.world.height()) + player.tileX();
-        if(currentPos != lastPos || player.unit().isBuilding() || lastTyping != player.typing()) resetAfkTimer();
+        if(currentPos != lastPos || player.unit().isBuilding() || lastTyping != player.typing()) timer.reset(0, 0);
 
         lastPos = currentPos;
         lastTyping = player.typing();
         return timer.get(duration * Time.toMinutes);
-    }
-
-    public void resetAfkTimer(){
-        timer.reset(0, 0);
     }
 
     public Playerc getPlayer(){
