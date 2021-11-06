@@ -35,8 +35,20 @@ public class AfkPlugin extends Plugin{
             // Don't need to iterate every tick, every second is enough...
             if(enabled && updater.get(Time.toSeconds)){
                 kicker.each((player, watcher) -> {
-                    if(silentKick) player.getInfo().timesKicked -= 1;
-                    if(watcher.isAfk(duration)) player.kick(Strings.format(message, duration));
+                    if(watcher.isAfk(duration)) {
+                        if(silentKick){
+                            netServer.admins.kickedIPs.put(player.ip(), Math.max(netServer.admins.kickedIPs.get(player.ip(), 0L), Time.millis() + 30 * 1000));
+                            PlayerInfo info = netServer.admins.getInfo(player.uuid());
+                            info.lastKicked = Math.max(Time.millis() + 30 * 1000, info.lastKicked);
+                			
+                            Call.infoMessage(player.con, Strings.format(message, duration));
+                            player.con.close();
+                			
+                            netServer.admins.save();
+                            player.con.kicked = true;
+                            
+                        } else player.kick(Strings.format(message, duration));
+                    }
                 });
             }
         });
