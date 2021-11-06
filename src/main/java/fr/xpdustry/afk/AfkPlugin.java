@@ -37,18 +37,11 @@ public class AfkPlugin extends Plugin{
                 kicker.each((player, watcher) -> {
                     if(watcher.isAfk(duration)) {
                         if(silentKick){
-                            netServer.admins.kickedIPs.put(player.ip(), Math.max(netServer.admins.kickedIPs.get(player.ip(), 0L), Time.millis() + 30 * 1000));
-                            PlayerInfo info = netServer.admins.getInfo(player.uuid());
-                            info.lastKicked = Math.max(Time.millis() + 30 * 1000, info.lastKicked);
-                			
+                            player.kick(KickReason.gameover);
                             Call.infoMessage(player.con, Strings.format(message, duration));
-                            player.con.close();
-                			
-                            netServer.admins.save();
-                            player.con.kicked = true;
-                            
+
                         } else player.kick(Strings.format(message, duration));
-                    }
+                	}
                 });
             }
         });
