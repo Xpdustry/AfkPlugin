@@ -3,7 +3,7 @@
   "displayName": "Xpdustry AfkPlugin",
   "author": "Phinner",
   "description": "Kick afk bois.",
-  "version": "1.4",
+  "version": "1.5",
   "minGameVersion": "105",
   "hidden": true,
   "java": true,
