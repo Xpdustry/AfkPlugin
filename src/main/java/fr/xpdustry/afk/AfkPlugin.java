@@ -35,8 +35,8 @@ public class AfkPlugin extends Plugin{
             // Don't need to iterate every tick, every second is enough...
             if(enabled && updater.get(Time.toSeconds)){
                 kicker.each((player, watcher) -> {
-                	if(silentKick) player.getInfo().timesKicked -= 1;
-                	if(watcher.isAfk(duration)) player.kick(Strings.format(message, duration));
+                    if(silentKick) player.getInfo().timesKicked -= 1;
+                    if(watcher.isAfk(duration)) player.kick(Strings.format(message, duration));
                 });
             }
         });
@@ -81,19 +81,19 @@ public class AfkPlugin extends Plugin{
                         Log.info("The silent kick is '@'", enabled ? "enabled" : "disabled");
                     }else{
                         switch (args[1]){
-                        	case "on":
-                        		silentKick = true;
-                        		Log.info("silent kick enabled ...");
+                            case "on":
+                                silentKick = true;
+                                Log.info("silent kick enabled ...");
                         		
-                        	case "off":
-                        		silentKick = false;
-                        		Log.info("silent kick disabled ...");
+                            case "off":
+                                silentKick = false;
+                                Log.info("silent kick disabled ...");
                         	
-                        	default: Log.err("Invalid argument");
+                            default: Log.err("Invalid argument");
                         }
                     }
                 	
-                	break;
+                    break;
 
                 default: Log.err("Your command is invalid.");
             }
