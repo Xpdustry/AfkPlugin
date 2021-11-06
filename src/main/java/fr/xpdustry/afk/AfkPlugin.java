@@ -7,6 +7,7 @@ import arc.util.*;
 import mindustry.gen.*;
 import mindustry.mod.*;
 import mindustry.game.EventType.*;
+import mindustry.net.Packets.*;
 
 
 @SuppressWarnings("unused")
@@ -14,12 +15,11 @@ public class AfkPlugin extends Plugin{
     // Settings
     private static String message = "[scarlet]You have been kicked for being AFK.";
     private static boolean enabled = true;
-    private static boolean silentKick = true;
     private static int duration = 10;
     
     // Internals
     private static final Interval updater = new Interval();
-    private static final ObjectMap<Player, AfkWatcher> kicker = new ObjectMap<>();
+    private static final ObjectMap<Playerc, AfkWatcher> kicker = new ObjectMap<>();
 
     @Override
     public void init(){
@@ -35,12 +35,9 @@ public class AfkPlugin extends Plugin{
             // Don't need to iterate every tick, every second is enough...
             if(enabled && updater.get(Time.toSeconds)){
                 kicker.each((player, watcher) -> {
-                    if(watcher.isAfk(duration)) {
-                        if(silentKick){
-                            player.kick(KickReason.gameover);
-                            Call.infoMessage(player.con, Strings.format(message, duration));
-
-                        } else player.kick(Strings.format(message, duration));
+                    if(watcher.isAfk(duration)){
+                        Call.infoMessage(player.con(), Strings.format(message, duration));
+                        player.kick(KickReason.gameover);
                 	}
                 });
             }
@@ -80,25 +77,6 @@ public class AfkPlugin extends Plugin{
                     }
 
                     break;
-                    
-                case "type":
-                	if(args.length == 1){
-                        Log.info("The silent kick is '@'", enabled ? "enabled" : "disabled");
-                    }else{
-                        switch (args[1]){
-                            case "on":
-                                silentKick = true;
-                                Log.info("silent kick enabled ...");
-                        		
-                            case "off":
-                                silentKick = false;
-                                Log.info("silent kick disabled ...");
-                        	
-                            default: Log.err("Invalid argument");
-                        }
-                    }
-                	
-                    break;
 
                 default: Log.err("Your command is invalid.");
             }
@@ -119,10 +97,6 @@ public class AfkPlugin extends Plugin{
         return enabled;
     }
 
-    public static boolean silentKickEnabled() {
-    	return silentKick;
-    }
-    
     public static void setEnabled(boolean enabled){
         AfkPlugin.enabled = enabled;
         Log.info("The AFK kicker is now @.", enabled ? "enabled" : "disabled");
@@ -139,7 +113,7 @@ public class AfkPlugin extends Plugin{
         Core.settings.put("xpdustry-afk-duration", duration);
     }
 
-    public static ObjectMap<Player,AfkWatcher> getAfkPlayers(){
+    public static ObjectMap<Playerc,AfkWatcher> getAfkPlayers(){
         return kicker.copy();
     }
 }
