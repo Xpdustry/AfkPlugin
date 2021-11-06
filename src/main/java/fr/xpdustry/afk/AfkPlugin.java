@@ -14,10 +14,12 @@ public class AfkPlugin extends Plugin{
     // Settings
     private static String message = "[scarlet]You have been kicked for being AFK.";
     private static boolean enabled = true;
+    private static boolean silentKick = true;
     private static int duration = 10;
+    
     // Internals
     private static final Interval updater = new Interval();
-    private static final ObjectMap<Playerc, AfkWatcher> kicker = new ObjectMap<>(8);
+    private static final ObjectMap<Player, AfkWatcher> kicker = new ObjectMap<>();
 
     @Override
     public void init(){
@@ -33,8 +35,8 @@ public class AfkPlugin extends Plugin{
             // Don't need to iterate every tick, every second is enough...
             if(enabled && updater.get(Time.toSeconds)){
                 kicker.each((player, watcher) -> {
-                    if(!watcher.isAfk(duration)) return;
-                    player.kick(Strings.format(message, duration));
+                	if(silentKick) player.getInfo().timesKicked -= 1;
+                	if(watcher.isAfk(duration)) player.kick(Strings.format(message, duration));
                 });
             }
         });
@@ -43,7 +45,7 @@ public class AfkPlugin extends Plugin{
     @Override
     public void registerServerCommands(CommandHandler handler){
         // Kicker commands :^)
-        handler.register("afk", "<time/status/message> [arg...]", "Manage the AFK kicker.", (args) -> {
+        handler.register("afk", "<time/status/message/type> [arg...]", "Manage the AFK kicker.", (args) -> {
             switch (args[0].toLowerCase()){
                 case "time":
                     if(args.length == 1){
@@ -73,8 +75,27 @@ public class AfkPlugin extends Plugin{
                     }
 
                     break;
+                    
+                case "type":
+                	if(args.length == 1){
+                        Log.info("The silent kick is '@'", enabled ? "enabled" : "disabled");
+                    }else{
+                        switch (args[1]){
+                        	case "on":
+                        		silentKick = true;
+                        		Log.info("silent kick enabled ...");
+                        		
+                        	case "off":
+                        		silentKick = false;
+                        		Log.info("silent kick disabled ...");
+                        	
+                        	default: Log.err("Invalid argument");
+                        }
+                    }
+                	
+                	break;
 
-                default: Log.info("Your command is invalid.");
+                default: Log.err("Your command is invalid.");
             }
         });
     }
@@ -93,6 +114,10 @@ public class AfkPlugin extends Plugin{
         return enabled;
     }
 
+    public static boolean silentKickEnabled() {
+    	return silentKick;
+    }
+    
     public static void setEnabled(boolean enabled){
         AfkPlugin.enabled = enabled;
         Log.info("The AFK kicker is now @.", enabled ? "enabled" : "disabled");
@@ -109,7 +134,7 @@ public class AfkPlugin extends Plugin{
         Core.settings.put("xpdustry-afk-duration", duration);
     }
 
-    public static ObjectMap<Playerc,AfkWatcher> getAfkPlayers(){
+    public static ObjectMap<Player,AfkWatcher> getAfkPlayers(){
         return kicker.copy();
     }
 }
